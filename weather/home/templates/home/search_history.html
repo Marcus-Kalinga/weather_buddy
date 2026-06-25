@@ -1,0 +1,376 @@
+<!-- weather/templates/search_history/search_history.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search History - Weather App</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Header styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+        }
+        
+        .header h1 span {
+            color: #667eea;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-danger {
+            background: #e53e3e;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 62, 62, 0.4);
+        }
+        
+        /* Stats bar */
+        .stats {
+            background: #f7fafc;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stats span {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .stats strong {
+            color: #2d3748;
+            font-size: 16px;
+        }
+        
+        /* Table styles */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        th {
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #2d3748;
+        }
+        
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+        
+        tbody tr:hover {
+            background: #f7fafc;
+            transform: scale(1.01);
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Weather condition badges */
+        .condition-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .condition-sunny {
+            background: #fef3c7;
+            color: #d69e2e;
+        }
+        
+        .condition-rainy {
+            background: #bee3f8;
+            color: #2b6cb0;
+        }
+        
+        .condition-cloudy {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+        
+        .condition-snowy {
+            background: #e6fffa;
+            color: #2c7a7b;
+        }
+        
+        .condition-default {
+            background: #edf2f7;
+            color: #4a5568;
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+        }
+        
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            font-size: 16px;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            text-align: center;
+            color: #a0aec0;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+            
+            .header-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .stats {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            th, td {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            
+            /* Make table scrollable on mobile */
+            .table-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .container {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌤️ Search <span>History</span></h1>
+            <div class="header-actions">
+                <a href="{% url 'home' %}" class="btn btn-primary">← Back to Home</a>
+                {% if searches %}
+                <a href="{% url 'home' %}" class="btn btn-danger">🗑️ Clear All</a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats">
+            <span>📊 <strong>{{ searches.count }}</strong> total searches</span>
+            <span>🕐 Most recent: <strong>
+                {% if searches %}
+                    {{ searches.0.searched_at|date:"M d, Y H:i" }}
+                {% else %}
+                    No searches yet
+                {% endif %}
+            </strong></span>
+            <span>📍 <strong>
+                {% if searches %}
+                    {{ searches.0.city }}
+                {% else %}
+                    No data
+                {% endif %}
+            </strong></span>
+        </div>
+        
+        <!-- Search History Table -->
+        <div class="table-wrapper">
+            {% if searches %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>City</th>
+                        <th>Temperature</th>
+                        <th>Feels Like</th>
+                        <th>Condition</th>
+                        <th>Humidity</th>
+                        <th>Wind</th>
+                        <th>Pressure</th>
+                        <th>Date & Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for search in searches %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><strong>{{ search.city }}</strong></td>
+                        <td>{{ search.temperature }}°C</td>
+                        <td>{{ search.feels_like }}°C</td>
+                        <td>
+                            {% with condition=search.condition|lower %}
+                                {% if "sun" in condition or "clear" in condition %}
+                                    <span class="condition-badge condition-sunny">☀️ {{ search.condition }}</span>
+                                {% elif "rain" in condition or "drizzle" in condition %}
+                                    <span class="condition-badge condition-rainy">🌧️ {{ search.condition }}</span>
+                                {% elif "cloud" in condition or "overcast" in condition %}
+                                    <span class="condition-badge condition-cloudy">☁️ {{ search.condition }}</span>
+                                {% elif "snow" in condition or "ice" in condition %}
+                                    <span class="condition-badge condition-snowy">❄️ {{ search.condition }}</span>
+                                {% else %}
+                                    <span class="condition-badge condition-default">🌤️ {{ search.condition }}</span>
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                        <td>{{ search.humidity }}%</td>
+                        <td>{{ search.wind_speed }} km/h</td>
+                        <td>{{ search.pressure }} mb</td>
+                        <td>{{ search.searched_at|date:"M d, Y" }}<br><small>{{ search.searched_at|time:"H:i" }}</small></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <!-- Empty State -->
+            <div class="empty-state">
+                <div class="icon">🔍</div>
+                <h3>No search history yet</h3>
+                <p>Start searching for weather in different cities and they'll appear here!</p>
+                <br>
+                <a href="{% url 'home' %}" class="btn btn-primary">Search for weather</a>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>Weather App &copy; 2024 | Showing {{ searches.count }} search{{ searches.count|pluralize }}</p>
+        </div>
+    </div>
+</body>
+</html>
